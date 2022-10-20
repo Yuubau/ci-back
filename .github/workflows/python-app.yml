@@ -15,7 +15,7 @@ permissions:
 jobs:
 
   build:
-    runs-on: ubuntu-latest -v /source-path:/container-path
+    runs-on: ubuntu-latest
     services:
       postgres:
         image: postgres
@@ -54,6 +54,7 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Test with pytest
         run: |
+          context: ./
           python -m venv venv
           ls
           pip install -r requirements.txt
