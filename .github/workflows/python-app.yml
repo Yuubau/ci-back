@@ -55,6 +55,7 @@ jobs:
       - name: Test with pytest
         run: |
           python -m venv venv
+          ls
           pip install -r requirements.txt
           docker-compose up -d
           python manage.py migrate
