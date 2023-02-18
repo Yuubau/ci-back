@@ -54,10 +54,6 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Test with pytest
         run: |
-          ls
-          python -m venv venv
-          ls
-          pip install -r requirements.txt
           docker-compose up -d
           python manage.py migrate
           pytest
