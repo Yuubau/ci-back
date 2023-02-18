@@ -28,12 +28,12 @@ jobs:
 
 
     steps:
+      - uses: actions/checkout@v3
       - name: Connect to PostgreSQL
         env:
           # The hostname used to communicate with the PostgreSQL service container
           POSTGRES_HOST: postgres
           POSTGRES_PORT: 5432
-        uses: actions/setup-python@v3
 
       - name: Set up Python 3.10
         uses: actions/setup-python@v3
@@ -46,7 +46,7 @@ jobs:
           update-pip: "true"
           update-setuptools: "false"
           update-wheel: "false"
-          path: "./requirements.txt"
+          path: "requirements.txt"
         
       - name: Lint with flake8
         run: |
