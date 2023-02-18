@@ -1,14 +1,20 @@
 services:
   database:
-    image: postgres:14.5-alpine3.16
+    image: postgres:latest
+    env:
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
     ports:
       - 5432:5432
-    environment:
-      - POSTGRES_USER=local_user
-      - POSTGRES_PASSWORD=local_password
-      - POSTGRES_DB=local_database
+    options: >-
+      --health-cmd pg_isready
+      --health-interval 10s
+      --health-timeout 5s
+      --health-retries 5
     volumes:
       - dbdata:/var/lib/postgresql/data
+
 
 volumes:
   dbdata:
