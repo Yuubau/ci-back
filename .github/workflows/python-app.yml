@@ -67,7 +67,7 @@ jobs:
       - uses: Klemensas/action-autotag@stable
         with:
           tag_prefix: "v"
-          GITHUB_TOKEN: "${{ secrets.TOKEN }}"
+          github_token: "${{ secrets.TOKEN }}"
 
 
 
