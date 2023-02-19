@@ -49,14 +49,8 @@ jobs:
         shell: bash
         
       - name: Run Tests
-        env:
-          DEBUG: "0"
-          DJANGO_SECRET_KEY: ${{ env.SECRET_KEY }}
-          DB_USERNAME: ${{ env.USER }}
-          DB_PASSWORD: ${{ env.PASSWORD }}
-          DB_HOST: localhost
-          DB_DATABASE: ${{ env.NAME }}
-          DB_PORT: 5432
+        env: 
+          DATABASE_URL: 'postgres://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres'
         run: python manage.py test
 
 
