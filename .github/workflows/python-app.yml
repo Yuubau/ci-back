@@ -48,7 +48,9 @@ jobs:
 
           
       - name: Start containers
-        run: docker-compose -f "docker-compose.yml" up -d --build
+        run: |
+          docker-compose down
+          docker-compose -f "docker-compose.yml" up -d --build
         shell: bash
         
       - name: Run Tests
