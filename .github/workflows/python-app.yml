@@ -1,5 +1,5 @@
   
-name: PostgreSQL service example
+name: Build CI
 on: push
 
 jobs:
@@ -20,7 +20,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         ports:
-          - 5432:5432
+          - 5480:5432
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -61,7 +61,14 @@ jobs:
             POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
             POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
             POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-            DATABASE_URL: 'postgres://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres'
+            DATABASE_URL: 'postgres://postgres:postgres@127.0.0.1:5480/postgres'
         run: python manage.py test
+        
+      - uses: Klemensas/action-autotag@stable
+        with:
+          tag_prefix: "v"
+          github_token: "${{ secrets.TOKEN }}"
+
+
 
 
