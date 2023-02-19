@@ -64,11 +64,9 @@ jobs:
             DATABASE_URL: 'postgres://postgres:postgres@127.0.0.1:5480/postgres'
         run: python manage.py test
         
-      - uses: rickstaa/action-create-tag@v1
+      - uses: Klemensas/action-autotag@stable
         with:
-          tag: "latest"
-          message: "Latest release"
-        
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
 
 
