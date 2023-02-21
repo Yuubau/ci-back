@@ -2,11 +2,6 @@
 name: Build CI
 on: push
 
-env:
-  PROJECT_ID: ${{ secrets.GOOGLE_ID }}
-  SERVICE: ci-2023
-  REGION: YOUR_SERVICE_REGION
-
 jobs:
   # Label of the container job
   Workflow:
@@ -76,31 +71,31 @@ jobs:
           tag_prefix: "v"
           github_token: ${{ secrets.TOKEN }}
 
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v1
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
-          workload_identity_provider: projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider
-          service_account: my-service-account@my-project.iam.gserviceaccount.com
+              service_account_email: ${{ secrets.GCP_EMAIL }}
+              service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+              export_default_credentials: true
 
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
-
-      - name: Authorize Docker push
-        run: gcloud auth configure-docker
-
-      - name: Build and Push Container
+          # Configure Docker with Credentials
+      - name: Configure Docker
         run: |
-          -docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} .
-                docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }}
+              gcloud auth configure-docker
 
-      - name: Deploy to Cloud Run
+          # Build the Docker image
+      - name: Build & Publish
         run: |
-           - gcloud run deploy ${{ env.SERVICE }} \
-             --region ${{ env.REGION }} \
-                  --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} \
-                  --platform "managed" \
-                  --quiet
+              gcloud config set project ${{ secrets.GCP_PROJECT }}
+              gcloud builds submit --tag gcr.io/${{ secrets.GCP_PROJECT }}/${{ secrets.GCP_APPLICATION }}
+              gcloud config set run/region us-central1
 
+          # Deploy the Docker image to the GKE cluster
+      - name: Deploy
+        run: |
+              gcloud run deploy ${{ secrets.GCP_APPLICATION }} --image gcr.io/${{ secrets.GCP_PROJECT }}/${{ secrets.GCP_APPLICATION }} \
+              --platform managed \
+              --allow-unauthenticated \
+              --memory 512M
 
 
 
