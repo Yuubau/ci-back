@@ -2,17 +2,24 @@
 name: Build CI
 on: push
 
+env:
+  PROJECT_ID: ${{ secrets.GOOGLE_ID }}
+  SERVICE: ci-2023
+  REGION: YOUR_SERVICE_REGION
+
 jobs:
   # Label of the container job
-  container-job:
+  Workflow:
     # Containers must run in Linux based operating systems
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: 'read'
+      id-token: 'write'
 
     # Service containers to run with `container-job`
     services:
       # Label used to access the service container
-      db:
+      database:
         # Docker Hub image
         image: postgres
         env:
@@ -20,7 +27,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         ports:
-          - 5480:5432
+          - 5432:5432
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -67,7 +74,32 @@ jobs:
       - uses: Klemensas/action-autotag@stable
         with:
           tag_prefix: "v"
-          github_token: "${{ secrets.TOKEN }}"
+          github_token: ${{ secrets.TOKEN }}
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider
+          service_account: my-service-account@my-project.iam.gserviceaccount.com
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Authorize Docker push
+        run: gcloud auth configure-docker
+
+      - name: Build and Push Container
+        run: |
+          -docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} .
+                docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }}
+
+      - name: Deploy to Cloud Run
+        run: |
+           - gcloud run deploy ${{ env.SERVICE }} \
+             --region ${{ env.REGION }} \
+                  --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} \
+                  --platform "managed" \
+                  --quiet
 
 
 

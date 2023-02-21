@@ -1,14 +1,17 @@
 services:
   database:
-    image: postgres:14.5-alpine3.16
-    ports:
-      - 5432:5432
+        # Docker Hub image
+    image: postgres
     environment:
-      - POSTGRES_USER=local_user
-      - POSTGRES_PASSWORD=local_password
-      - POSTGRES_DB=local_database
-    volumes:
-      - dbdata:/var/lib/postgresql/data
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
 
-volumes:
-  dbdata:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - database
+    ports:
+      - 8000:8000
