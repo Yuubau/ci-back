@@ -92,7 +92,7 @@ jobs:
           # Deploy the Docker image to the GKE cluster
       - name: Deploy
         run: |
-              gcloud run deploy ${{ secrets.APP }} --image gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.APP }} \
+              gcloud run deploy ${{ secrets.APP }} --image gcr.io/ci-2023/${{ secrets.APP }} \
               --platform managed \
               --allow-unauthenticated \
               --memory 512M
