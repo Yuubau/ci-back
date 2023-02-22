@@ -86,7 +86,7 @@ jobs:
       - name: Build & Publish
         run: |
               gcloud config set project ci2023
-              gcloud builds submit --tag gcr.io/ci2023/${{ secrets.APP }}
+              gcloud builds submit --tag gcr.io/ci-2023/${{ secrets.APP }}
               gcloud config set run/region europe-west1
 
           # Deploy the Docker image to the GKE cluster
