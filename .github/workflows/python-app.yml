@@ -85,7 +85,7 @@ jobs:
           # Build the Docker image
       - name: Build & Publish
         run: |
-              gcloud config set project ci2023
+              gcloud config set project ci-2023
               gcloud builds submit --tag gcr.io/ci-2023/${{ secrets.APP }}
               gcloud config set run/region europe-west1
 
