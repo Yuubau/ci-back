@@ -71,11 +71,11 @@ jobs:
           tag_prefix: "v"
           github_token: ${{ secrets.TOKEN }}
 
-      - uses: google-github-actions/setup-gcloud@v0
+      - uses: 'google-github-actions/auth@v1'
         with:
-              service_account_email: ${{ secrets.GCP_EMAIL }}
-              service_account_key: ${{ secrets.GCP_CREDENTIALS }}
-              export_default_credentials: true
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+
 
           # Configure Docker with Credentials
       - name: Configure Docker
