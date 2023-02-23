@@ -9,7 +9,6 @@ services:
 
   app:
     environment:
-      DEBUG: ${{ secrets.DEBUG }}
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
       POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
