@@ -9,11 +9,11 @@ services:
 
   app:
     environment:
-      SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
-      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      SECRET_KEY: django-insecure-kz2%@&h7)grzg%d+i1_ekp42muvdvt%z=r3wrd^&715qd@#tof
+      POSTGRES_HOST: database
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
       DATABASE_URL: 'postgres://postgres:postgres@127.0.0.1:5432/postgres'
     build:
       context: .
