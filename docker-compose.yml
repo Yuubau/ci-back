@@ -1,7 +1,7 @@
 services:
   database:
         # Docker Hub image
-    image: postgres
+    image: postgres:13.4-alpine
     environment:
           POSTGRES_DB: postgres
           POSTGRES_USER: postgres
