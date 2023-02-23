@@ -8,14 +8,14 @@ services:
           POSTGRES_PASSWORD: postgres
 
   app:
-  env:
-    DEBUG: ${{ secrets.DEBUG }}
-    SECRET_KEY: ${{ secrets.SECRET_KEY }}
-    POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
-    POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-    POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-    POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-    DATABASE_URL: 'postgres://postgres:postgres@127.0.0.1:5432/postgres'
+    environment:
+      DEBUG: ${{ secrets.DEBUG }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      DATABASE_URL: 'postgres://postgres:postgres@127.0.0.1:5432/postgres'
     build:
       context: .
       dockerfile: Dockerfile
