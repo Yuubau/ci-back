@@ -85,14 +85,14 @@ jobs:
           # Build the Docker image
       - name: Build & Publish
         run: |
-              gcloud config set project ci-2023
-              gcloud builds submit --tag gcr.io/ci-2023/${{ secrets.APP }} ./
+              gcloud config set project ci-2023-378313
+              gcloud builds submit --tag gcr.io/ci-2023-378313/${{ secrets.APP }}:latest ./
               gcloud config set run/region europe-west1
 
           # Deploy the Docker image to the GKE cluster
       - name: Deploy
         run: |
-              gcloud run deploy ${{ secrets.APP }} --image gcr.io/ci-2023/${{ secrets.APP }}:latest \
+              gcloud run deploy ${{ secrets.APP }} --image gcr.io/ci-2023-378313/${{ secrets.APP }}:latest \
               --platform managed \
               --allow-unauthenticated \
               --memory 512M
