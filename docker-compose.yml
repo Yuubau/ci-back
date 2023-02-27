@@ -1,13 +1,24 @@
 services:
   database:
         # Docker Hub image
-    image: postgres
+    image: postgres:13.4-alpine
     environment:
           POSTGRES_DB: postgres
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
+    networks:
+      - res
 
   app:
+    environment:
+      SECRET_KEY: django-insecure-kz2%@&h7)grzg%d+i1_ekp42muvdvt%z=r3wrd^&715qd@#tof
+      POSTGRES_HOST: database
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      DATABASE_URL: 'postgres://postgres:postgres@database:5432/postgres'
+    networks:
+      - res
     build:
       context: .
       dockerfile: Dockerfile
@@ -15,3 +26,6 @@ services:
       - database
     ports:
       - 8000:8000
+     
+networks:
+  res:
